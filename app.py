@@ -9,7 +9,13 @@ The UFC MMA Predictor Web App V3.0
 author: Jason Chan Jin An
 GitHub: www.github.com/jasonchanhku
 """
-
+import dash
+import dash_core_components as dcc
+import dash_html_components as html
+########### Initiate the app
+external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+application = app.server
 # Libraries used for Section 1
 import pandas as pd
 from sklearn.neural_network import MLPClassifier  # simple lightweight deep learning
