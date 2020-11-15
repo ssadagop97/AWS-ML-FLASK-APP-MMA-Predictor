@@ -1,21 +1,19 @@
 """
 The UFC MMA Predictor Web App V3.0
+
 3.0 updates
 - automated the data update of fights and fighters
 - replaced outdated links in user guide
+
 3.1 TODO
 - think of how to separate machine learning from script
 - navigation bar of db browser and track record
+
 author: Jason Chan Jin An
 GitHub: www.github.com/jasonchanhku
+
 """
-import dash
-import dash_core_components as dcc
-import dash_html_components as html
-########### Initiate the app
-external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
-app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
-application = app.server
+
 # Libraries used for Section 1
 import pandas as pd
 from sklearn.neural_network import MLPClassifier  # simple lightweight deep learning
@@ -27,6 +25,9 @@ import requests
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
+#import search_google.api
+import pickle
+
 from dash.dependencies import Input, Output, State
 
 # Section 1: Data loading and Machine Learning.
@@ -34,101 +35,28 @@ from dash.dependencies import Input, Output, State
 
 # New fighters db data feed from morph.io
 # We're always asking for json because it's the easiest to deal with
-# morph_api_url = "https://api.morph.io/jasonchanhku/ufc_fighters_db/data.json"
+morph_api_url = "https://api.morph.io/jasonchanhku/ufc_fighters_db/data.json"
 
-# # Keep this key secret!
-# morph_api_key = <insert key here>
+# Keep this key secret!
 
-# r = requests.get(morph_api_url, params={
-#   'key': morph_api_key,
-#   'query': "select * from data"
-# })
+fights_db = pd.read_csv("Datasets/UFC_Fights.csv")
+f1name = fights_db['Fighter1']
+f2name = fights_db['Fighter2']
 
-# j = r.json()
+# model = pickle.load(open('Pickle_LR_Model.pkl', 'rb'))
+# def results(data):
+#     print(list(data.values()))
+#     d = [float(num) for num in list(data.values())]
+#     print(d)
+#     prediction = model.predict([np.array(d)])
+#     output = prediction[0][0]*1000
+#     return {"price":output}
+#######################################################################################################################
 
-fighters_db = pd.read_csv('Datasets/UFC_Fighters_Database.csv')
-
-# New fights db feed from morph.io
-# We're always asking for json because it's the easiest to deal with
-# morph_api_url_1 = "https://api.morph.io/jasonchanhku/ufc_fights_db/data.json"
-
-# r_1 = requests.get(morph_api_url_1, params={
-#   'key': morph_api_key,
-#   'query': "select * from data"
-# })
-
-# j_1 = r_1.json()
-
-fights_db = pd.read_csv('Datasets/Cleansed_Data.csv')
-fights_db = fights_db.dropna()
-
-fighters = fighters_db['NAME']
-
-# Manual sorting
 weightclass = ['strawweight', 'flyweight', 'bantamweight', 'featherweight', 'lightweight', 'welterweight',
                'middleweight', 'lightheavyweight', 'heavyweight']
 
 best_cols = ['SLPM_delta', 'SAPM_delta', 'STRD_delta', 'TD_delta', 'Odds_delta']
-
-all_X = fights_db[best_cols]
-all_y = fights_db['Label']
-
-# This was the best model identified in the ipynb documentation
-mlp = MLPClassifier(activation='tanh', alpha=0.0001, batch_size='auto', beta_1=0.9,
-                    beta_2=0.999, early_stopping=False, epsilon=1e-08,
-                    hidden_layer_sizes=(5, 5), learning_rate='constant',
-                    learning_rate_init=0.001, max_iter=200, momentum=0.9,
-                    nesterovs_momentum=True, power_t=0.5, random_state=1, shuffle=True,
-                    solver='adam', tol=0.0001, validation_fraction=0.1, verbose=False,
-                    warm_start=False)
-
-mlp.fit(all_X, all_y)
-
-
-def predict_outcome(data):
-    prediction = mlp.predict_proba(data.reshape(1, -1))
-
-    return prediction
-
-
-#######################################################################################################################
-
-# Section 2: Data Visualization Prep
-
-# Columns to normalize
-cols_norm = ['REACH', 'SLPM', 'SAPM', 'STRA', 'STRD', 'TD', 'TDA', 'TDD', 'SUBA']
-
-
-def normalize(df):
-    result = df.copy()
-    for feature_name in cols_norm:
-        max_value = df[feature_name].max()
-        min_value = df[feature_name].min()
-        result[feature_name] = (df[feature_name] - min_value) / (max_value - min_value)
-    return result
-
-
-fighters_db_normalize = normalize(fighters_db)
-
-fighters_db_normalize = fighters_db_normalize.rename(columns={
-
-    'SLPM': 'Striking <br> Volume',
-    'SAPM': 'Damage <br> Taken',
-    'STRA': 'Striking <br> Accuracy',
-    'TDA': 'Takedown <br> Accuracy',
-    'SUBA': 'Submission'
-
-})
-
-select_cols = ['NAME', 'Striking <br> Volume', 'Damage <br> Taken', 'Striking <br> Accuracy', 'Takedown <br> Accuracy'
-    , 'Submission']
-
-fighters_db_normalize = fighters_db_normalize[select_cols]
-
-col_y = fighters_db_normalize.columns.tolist()[1:]
-
-
-#######################################################################################################################
 
 # Section 3: Dash web app (removed keys)
 
@@ -151,16 +79,13 @@ def get_fighter_url(fighter):
     }
 
     # Create a results object
-    results = search_google.api.results(buildargs, cseargs)
-    url = results.links[0]
 
-    return url
 
 
 colors = {
 
-    'background': 'black',
-    'text': '#000000'
+    'background': '#F4F6F7',
+    'text': '#34495E'
 
 }
 
@@ -168,13 +93,12 @@ size = {
     'font': '20px'
 }
 
-app = dash.Dash(__name__)
+application = app = dash.Dash(__name__)
 
 server = app.server
 
 app.layout = html.Div(style={'backgroundColor': colors['background'],
-                            'fontColor':'white',
-                             'backgroundImage': 'url(https://github.com/ssadagop97/UFC_DASH/blob/main/conor-mcgregor-winner.jpg?raw=true)',
+                             'backgroundImage': 'url(https://github.com/jasonchanhku/UFC-MMA-Predictor/blob/master/Pictures/NOTORIOUS.jpg?raw=true)',
                              'backgroundRepeat': 'no-repeat',
                              'backgroundPosition': 'center top',
                              'backgroundSize': 'auto',
@@ -222,7 +146,7 @@ app.layout = html.Div(style={'backgroundColor': colors['background'],
 
             dcc.Dropdown(
                 id='f1-weightclass',
-                options=[{'label': i.capitalize(), 'value': i} for i in weightclass],
+                options=[],
                 value='welterweight'
             ),
 
@@ -239,7 +163,9 @@ app.layout = html.Div(style={'backgroundColor': colors['background'],
                        ),
 
             dcc.Dropdown(
-                id='f1-fighter'
+                id='f1-fighter',
+                options=[{'label': i.capitalize(), 'value': i} for i in f1name],
+                value='welterweight'
             ),
 
             html.Br(),
@@ -296,7 +222,7 @@ app.layout = html.Div(style={'backgroundColor': colors['background'],
 
             dcc.Dropdown(
                 id='f2-weightclass',
-                options=[{'label': i.capitalize(), 'value': i} for i in weightclass],
+                options=[],
                 value='welterweight'
             ),
 
@@ -312,7 +238,9 @@ app.layout = html.Div(style={'backgroundColor': colors['background'],
                        ),
 
             dcc.Dropdown(
-                id='f2-fighter'
+                id='f2-fighter',
+                options=[{'label': i.capitalize(), 'value': i} for i in f2name],
+                value='welterweight'
             ),
 
             html.Br(),
@@ -648,12 +576,14 @@ def update_graph(f1, f2):
 
 
 @app.callback(
+
     Output('f1-proba', 'children'),
     [Input('button', 'n_clicks')],
      state=[State('f1-fighter', 'value'),
      State('f2-fighter', 'value'),
      State('f1-odds', 'value'),
      State('f2-odds', 'value')]
+
 )
 def update_f1_proba(nclicks, f1, f2, f1_odds, f2_odds):
 
@@ -688,12 +618,14 @@ def update_f1_proba(nclicks, f1, f2, f1_odds, f2_odds):
 
 
 @app.callback(
+
     Output('f2-proba', 'children'),
     [Input('button', 'n_clicks')],
      state=[State('f1-fighter', 'value'),
      State('f2-fighter', 'value'),
      State('f1-odds', 'value'),
      State('f2-odds', 'value')]
+
 )
 def update_f2_proba(nclicks, f1, f2, f1_odds, f2_odds):
 
@@ -742,4 +674,3 @@ if 'DYNO' in os.environ:
 # add host = "0.0.0.0" and port = "8080" in dev mode
 if __name__ == "__main__":
     app.run_server(debug=True, port=8000)
- 
