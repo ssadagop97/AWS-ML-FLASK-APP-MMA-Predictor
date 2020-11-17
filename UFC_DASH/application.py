@@ -9,6 +9,8 @@ The UFC MMA Predictor Web App V3.0
 author: Jason Chan Jin An
 GitHub: www.github.com/jasonchanhku
 """
+import dash
+
 import dash_core_components as dcc
 import dash_html_components as html
 # Libraries used for Section 1
@@ -18,11 +20,7 @@ import numpy as np
 import os
 import plotly.graph_objs as go
 # Libraries used for Section 2
-import dash
-import dash_core_components as dcc
-import dash_html_components as html
 from dash.dependencies import Input, Output, State
-
 ########### Initiate the app
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 application = dash.Dash(__name__, external_stylesheets=external_stylesheets)
