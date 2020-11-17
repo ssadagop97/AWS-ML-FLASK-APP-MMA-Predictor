@@ -159,7 +159,7 @@ application.layout = html.Div(style={'backgroundColor': colors['background'],
             ),
             html.Label('Select Weightclass',
                        style={
-                           'fontSize': size['font']
+                           'fontSize': size['font'],'color':'white'
                        }
                        ),
             dcc.Dropdown(
@@ -170,7 +170,7 @@ application.layout = html.Div(style={'backgroundColor': colors['background'],
             html.Br(),
             html.Label('Select Fighter',
                        style={
-                           'fontSize': size['font']
+                           'fontSize': size['font'], 'color':'white'
                        }
                        ),
             dcc.Dropdown(
@@ -181,7 +181,7 @@ application.layout = html.Div(style={'backgroundColor': colors['background'],
                 'Input Decimal Odds',
                 style={
                     'fontSize': size['font'],
-                    'textAlign': 'center'
+                    'textAlign': 'center', 'color':'white'
                 }
             ),
             html.Center(
@@ -231,7 +231,7 @@ application.layout = html.Div(style={'backgroundColor': colors['background'],
                 'Input Decimal Odds',
                 style={
                     'fontSize': size['font'],
-                    'textAlign': 'center'
+                    'textAlign': 'center','color':'white'
                 }
             ),
             html.Center(
@@ -349,7 +349,7 @@ def set_image_f1(fighter1):
         fighter1 = 'Aleksei Oliynyk'
         
     #return get_fighter_url(fighter1)
-    return "https://github.com/ssadagop97/UFC_DASH/tree/main/UFC_DASH/Pictures/fighter_left.png?raw=true"
+    return "https://github.com/ssadagop97/UFC_DASH/tree/main/UFC_DASH/Pictures/fighter_left.jpg?raw=true"
 @application.callback(
     Output('f2-image', 'src'),
     [Input('f2-fighter', 'value')]
@@ -360,7 +360,7 @@ def set_image_f2(fighter2):
         
     #return get_fighter_url(fighter2)
     
-    return "https://github.com/ssadagop97/UFC_DASH/tree/main/UFC_DASH/Pictures/fighter_right.png?raw=true"
+    return "https://github.com/ssadagop97/UFC_DASH/tree/main/UFC_DASH/Pictures/fighter_right.jpg?raw=true"
 @application.callback(
     Output('fight-stats', 'figure'),
     [Input('f1-fighter', 'value'),
