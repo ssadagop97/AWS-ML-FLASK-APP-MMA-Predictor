@@ -740,5 +740,5 @@ if 'DYNO' in os.environ:
 # add host = "0.0.0.0" and port = "8080" in dev mode
 if __name__ == "__main__":
     application.secret_key = 'mysecret'
-    application.run_server(debug=True,host='3.90.26.121')
+    application.run_server(debug=True,host='0.0.0.0')
  
