@@ -45,13 +45,31 @@ server = application.server
 
 from smart_open import smart_open
 
-aws_key = os.environ['AWS_ACCESS_KEY']
-aws_secret = os.environ['AWS_SECRET_ACCESS_KEY']
+import os
+import boto3
+import pandas as pd
+import sys
+
+if sys.version_info[0] < 3: 
+    from StringIO import StringIO # Python 2.x
+else:
+    from io import StringIO # Python 3.x
+
+# get your credentials from environment variables
+aws_id = os.environ['AWS_ID']
+aws_secret = os.environ['AWS_SECRET']
+
+client = boto3.client('s3', aws_access_key_id=aws_id,
+        aws_secret_access_key=aws_secret)
 
 bucket_name = 'winwincsvs'
+
 object_key = 'UFC_Fighters_Database.csv'
-path = 's3://{}:{}@{}/{}'.format(aws_key, aws_secret, bucket_name, object_key)
-fighters_db = pd.read_csv(smart_open(path))
+csv_obj = client.get_object(Bucket=bucket_name, Key=object_key)
+body = csv_obj['Body']
+csv_string = body.read().decode('utf-8')
+
+UFC_Fighters_Database = pd.read_csv(StringIO(csv_string))
 #fighters_db = pd.read_csv('Datasets/UFC_Fighters_Database.csv')
 
 # New fights db feed from morph.io
@@ -65,9 +83,13 @@ fighters_db = pd.read_csv(smart_open(path))
 
 # j_1 = r_1.json()
 bucket_name = 'winwincsvs'
+
 object_key = 'Cleansed_Data.csv'
-path = 's3://{}:{}@{}/{}'.format(aws_key, aws_secret, bucket_name, object_key)
-fights_db = pd.read_csv(smart_open(path))
+csv_obj = client.get_object(Bucket=bucket_name, Key=object_key)
+body = csv_obj['Body']
+csv_string = body.read().decode('utf-8')
+
+fights_db = pd.read_csv(StringIO(csv_string))
 #fighters_db = pd.read_csv('Datasets/UFC_Fighters_Database.csv')
 #fights_db = pd.read_csv('Datasets/Cleansed_Data.csv')
 fights_db = fights_db.dropna()
