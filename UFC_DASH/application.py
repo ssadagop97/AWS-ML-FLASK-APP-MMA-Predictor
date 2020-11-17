@@ -22,54 +22,50 @@ import plotly.graph_objs as go
 # Libraries used for Section 2
 from dash.dependencies import Input, Output, State
 ########### Initiate the app
-#external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
-application = dash.Dash(__name__)
+external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+application = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 server = application.server
-
 # Section 1: Data loading and Machine Learning.
 # Make sure Machine Learning only run once
-
 # New fighters db data feed from morph.io
 # We're always asking for json because it's the easiest to deal with
 # morph_api_url = "https://api.morph.io/jasonchanhku/ufc_fighters_db/data.json"
-
 # # Keep this key secret!
 # morph_api_key = <insert key here>
-
 # r = requests.get(morph_api_url, params={
 #   'key': morph_api_key,
 #   'query': "select * from data"
 # })
-
 # j = r.json()
 
+from boto.s3.key import Key
+bucket='winwincsvs'
+k = Key(bucket)
+k.key = 'data_1.csv'
+k.set_canned_acl('public-read')
+
 fighters_db = pd.read_csv('Datasets/UFC_Fighters_Database.csv')
+#fighters_db = pd.read_csv('https://winwincsvs.s3.amazonaws.com/UFC_Fighters_Database.csv')
 
 # New fights db feed from morph.io
 # We're always asking for json because it's the easiest to deal with
 # morph_api_url_1 = "https://api.morph.io/jasonchanhku/ufc_fights_db/data.json"
-
 # r_1 = requests.get(morph_api_url_1, params={
 #   'key': morph_api_key,
 #   'query': "select * from data"
 # })
-
 # j_1 = r_1.json()
-
+#fighters_db = pd.read_csv('Datasets/UFC_Fighters_Database.csv')
 fights_db = pd.read_csv('Datasets/Cleansed_Data.csv')
+#fighters_db = pd.read_csv('https://winwincsvs.s3.amazonaws.com/Cleansed_Data.csv')
 fights_db = fights_db.dropna()
-
 fighters = fighters_db['NAME']
-
 # Manual sorting
 weightclass = ['strawweight', 'flyweight', 'bantamweight', 'featherweight', 'lightweight', 'welterweight',
                'middleweight', 'lightheavyweight', 'heavyweight']
-
 best_cols = ['SLPM_delta', 'SAPM_delta', 'STRD_delta', 'TD_delta', 'Odds_delta']
-
 all_X = fights_db[best_cols]
 all_y = fights_db['Label']
-
 # This was the best model identified in the ipynb documentation
 mlp = MLPClassifier(activation='tanh', alpha=0.0001, batch_size='auto', beta_1=0.9,
                     beta_2=0.999, early_stopping=False, epsilon=1e-08,
@@ -78,24 +74,14 @@ mlp = MLPClassifier(activation='tanh', alpha=0.0001, batch_size='auto', beta_1=0
                     nesterovs_momentum=True, power_t=0.5, random_state=1, shuffle=True,
                     solver='adam', tol=0.0001, validation_fraction=0.1, verbose=False,
                     warm_start=False)
-
 mlp.fit(all_X, all_y)
-
-
 def predict_outcome(data):
     prediction = mlp.predict_proba(data.reshape(1, -1))
-
     return prediction
-
-
 #######################################################################################################################
-
 # Section 2: Data Visualization Prep
-
 # Columns to normalize
 cols_norm = ['REACH', 'SLPM', 'SAPM', 'STRA', 'STRD', 'TD', 'TDA', 'TDD', 'SUBA']
-
-
 def normalize(df):
     result = df.copy()
     for feature_name in cols_norm:
@@ -103,41 +89,26 @@ def normalize(df):
         min_value = df[feature_name].min()
         result[feature_name] = (df[feature_name] - min_value) / (max_value - min_value)
     return result
-
-
 fighters_db_normalize = normalize(fighters_db)
-
 fighters_db_normalize = fighters_db_normalize.rename(columns={
-
     'SLPM': 'Striking <br> Volume',
     'SAPM': 'Damage <br> Taken',
     'STRA': 'Striking <br> Accuracy',
     'TDA': 'Takedown <br> Accuracy',
     'SUBA': 'Submission'
-
 })
-
 select_cols = ['NAME', 'Striking <br> Volume', 'Damage <br> Taken', 'Striking <br> Accuracy', 'Takedown <br> Accuracy'
     , 'Submission']
-
 fighters_db_normalize = fighters_db_normalize[select_cols]
-
 col_y = fighters_db_normalize.columns.tolist()[1:]
-
-
 #######################################################################################################################
-
 # Section 3: Dash web app (removed keys)
-
-# Section 3: Dash web app (removed keys)
-
 def get_fighter_url(fighter):
     buildargs = {
         'serviceName': 'customsearch',
         'version': 'v1',
         'developerKey': ''
     }
-
     # Define cseargs for search
     cseargs = {
         'q': fighter + '' + 'Official Fighter Profile',
@@ -148,99 +119,68 @@ def get_fighter_url(fighter):
         'fileType': 'png',
         'safe': 'off'
     }
-
     # Create a results object
-
-
-
+    results = search_google.api.results(buildargs, cseargs)
+    url = results.links[0]
+    return url
 colors = {
-
-    'background': '#F4F6F7',
-    'text': '#34495E'
-
+    'background': 'black',
+    'text': '#000000'
 }
-
 size = {
     'font': '20px'
 }
-
-application = app = dash.Dash(__name__)
-
-server = app.server
-
-app.layout = html.Div(style={'backgroundColor': colors['background'],
-                             'backgroundImage': 'url(https://github.com/jasonchanhku/UFC-MMA-Predictor/blob/master/Pictures/NOTORIOUS.jpg?raw=true)',
+application = dash.Dash(__name__)
+server = application.server
+application.layout = html.Div(style={'backgroundColor': colors['background'],
+                            'fontColor':'white',
+                             'backgroundImage': 'url(https://github.com/ssadagop97/UFC_DASH/blob/main/conor-mcgregor-winner.jpg?raw=true)',
                              'backgroundRepeat': 'no-repeat',
                              'backgroundPosition': 'center top',
                              'backgroundSize': 'auto',
                              'height': '950px'
                              }, children=[
-
     html.H1(
         "UFC MMA Predictor",
         style={
             'textAlign': 'center'
         }
     ),
-
-
     html.H3(
         'Current Model Accuracy: 70.4%',
         style={
             'textAlign': 'center',
         }
-
     ),
-
     html.Div(style={'textAlign': 'center'}, children=[
-
         html.Div(style={'width': '30%', 'float': 'left', 'textAlign': 'left'}, children=[
-
             html.Label(
                 'Favourite Fighter',
                 style={
                     'textAlign': 'center',
                     'fontSize': '40px'
-
                 }
             ),
-
             html.Label('Select Weightclass',
-
                        style={
-
                            'fontSize': size['font']
-
                        }
-
                        ),
-
             dcc.Dropdown(
                 id='f1-weightclass',
-                options=[],
+                options=[{'label': i.capitalize(), 'value': i} for i in weightclass],
                 value='welterweight'
             ),
-
             html.Br(),
-
             html.Label('Select Fighter',
-
                        style={
-
                            'fontSize': size['font']
-
                        }
-
                        ),
-
             dcc.Dropdown(
-                id='f1-fighter',
-                options=[{'label': i.capitalize(), 'value': i} for i in f1name],
-                value='welterweight'
+                id='f1-fighter'
             ),
-
             html.Br(),
-
             html.Label(
                 'Input Decimal Odds',
                 style={
@@ -248,9 +188,7 @@ app.layout = html.Div(style={'backgroundColor': colors['background'],
                     'textAlign': 'center'
                 }
             ),
-
             html.Center(
-
                 dcc.Input(
                     id='f1-odds',
                     placeholder='Enter odds (e.g 1.50)',
@@ -258,64 +196,41 @@ app.layout = html.Div(style={'backgroundColor': colors['background'],
                     value=''
                 ),
             ),
-
             html.Br(),
-
             html.Center(
-
                 html.Img(id='f1-image',
                          width='100%'
                          )
             )
-
         ]),
-
         html.Div(style={'width': '30%', 'float': 'right', 'textAlign': 'left'}, children=[
-
             html.Label(
                 'Underdog Fighter',
                 style={
                     'textAlign': 'center',
                     'fontSize': '40px'
-
                 }
             ),
-
             html.Label('Select Weightclass',
-
                        style={
-
                            'fontSize': size['font']
-
                        }
-
                        ),
-
             dcc.Dropdown(
                 id='f2-weightclass',
-                options=[],
+                options=[{'label': i.capitalize(), 'value': i} for i in weightclass],
                 value='welterweight'
             ),
-
             html.Br(),
-
             html.Label('Select Fighter',
-
                        style={
-
                            'fontSize': size['font']
                        }
-
                        ),
-
             dcc.Dropdown(
-                id='f2-fighter',
-                options=[{'label': i.capitalize(), 'value': i} for i in f2name],
-                value='welterweight'
+                id='f2-fighter'
             ),
-
             html.Br(),
-
             html.Label(
                 'Input Decimal Odds',
                 style={
@@ -323,9 +238,7 @@ app.layout = html.Div(style={'backgroundColor': colors['background'],
                     'textAlign': 'center'
                 }
             ),
-
             html.Center(
-
                 dcc.Input(
                     id='f2-odds',
                     placeholder='Enter odds (e.g 2.50)',
@@ -333,115 +246,69 @@ app.layout = html.Div(style={'backgroundColor': colors['background'],
                     value=''
                 ),
             ),
-
             html.Br(),
-
             html.Center(
-
                 html.Img(id='f2-image',
                          width='100%'
                          )
             )
-
         ]),
-
         html.Div(style={'width': '40%', 'marginLeft': 'auto', 'marginRight': 'auto', 'textAlign': 'left'
-
                         }, children=[
-
             dcc.Graph(
                 id='fight-stats',
                 config={'displayModeBar': False,
                         'staticPlot': True}
-
             ),
-
             html.Br(),
-
             html.Center(
-
                 html.Button('Predict', id='button', style={
-
                     'fontSize': '32px',
                     'backgroundColor': 'rgba(255,255,255,0.8)'
-
                 })
             ),
-
             html.Br(),
-
             html.Div(style={
-
                 'width': '35%',
                 'float': 'left',
                 'textAlign': 'left',
                 'backgroundColor': 'rgba(255,255,255,0.7)'
-
             },
-
                 children=[
-
                     html.H2('Favourite', style=
-
                     {'textAlign': 'center',
                      'color': 'rgb(102, 0, 0)'}
-
                             ),
-
                     html.H3(children=['click \n predict'], id='f1-proba', style={'textAlign': 'center'})
-
                 ]
-
             ),
-
             html.Div(style={
-
                 'width': '35%',
                 'float': 'right',
                 'textAlign': 'left',
                 'backgroundColor': 'rgba(255,255,255,0.7)'
-
             },
-
                 children=[
-
                     html.H2('Underdog', style=
-
                     {'textAlign': 'center',
                      'color': 'rgb(0, 51, 102)'}
-
                             ),
-
                     html.H3(children=['click \n predict'], id='f2-proba', style={'textAlign': 'center'})
-
                 ]
-
             )
-
         ]
-
                  )
-
     ]),
-
     html.Br(),
-
     html.Br(),
-
     html.Br(),
-
     html.Br(),
-
     html.Br(),
-
     html.Br(),
-
     html.Br(),
-
     html.Br(),
            
     html.Br(),
-
     html.Br(),
     
     html.Br(),
@@ -462,8 +329,6 @@ app.layout = html.Div(style={'backgroundColor': colors['background'],
         ],
         style={'text-align': 'center', 'margin-bottom': '15px'}
     ),
-
-
     html.Div(
         [
             dcc.Markdown(
@@ -509,62 +374,41 @@ app.layout = html.Div(style={'backgroundColor': colors['background'],
         ],
         style={'text-align': 'left', 'margin-bottom': '15px'}
     ),
-
     html.Br(),
-
     html.Br()
-
-
 ])
-
-
 # Decorators
-
 # Update f1-fighter amd f2-fighter based on input from f1-weightclass and f2-weightclass
-
 # Fighter 1
-
-
-@app.callback(
+@application.callback(
     Output('f1-fighter', 'options'),
     [Input('f1-weightclass', 'value')]
 )
 def set_f1_fighter(weightclasses):
     return [{'label': i, 'value': i} for i in
             fighters_db[fighters_db['WeightClass'] == weightclasses]['NAME'].sort_values()]
-
-
-@app.callback(
+@application.callback(
     Output('f1-fighter', 'value'),
     [Input('f1-fighter', 'options')]
 )
 def set_f1_fighter_value(options):
     return options[0]['value']
-
-
 # Fighter 2
-
-
-@app.callback(
+@application.callback(
     Output('f2-fighter', 'options'),
     [Input('f2-weightclass', 'value')]
 )
 def set_f1_fighter(weightclasses):
     return [{'label': i, 'value': i} for i in
             fighters_db[fighters_db['WeightClass'] == weightclasses]['NAME'].sort_values()]
-
-
-@app.callback(
+@application.callback(
     Output('f2-fighter', 'value'),
     [Input('f2-fighter', 'options')]
 )
 def set_f2_fighter_value(options):
     return options[1]['value']
-
-
 # Callback for change of picture
-
-@app.callback(
+@application.callback(
     Output('f1-image', 'src'),
     [Input('f1-fighter', 'value')]
 )
@@ -573,10 +417,8 @@ def set_image_f1(fighter1):
         fighter1 = 'Aleksei Oliynyk'
         
     #return get_fighter_url(fighter1)
-    return "https://github.com/jasonchanhku/UFC-MMA-Predictor/blob/master/Pictures/fighter_left.png?raw=true"
-
-
-@app.callback(
+    return "https://github.com/ssadagop97/UFC_DASH/tree/main/UFC_DASH/Pictures/fighter_left.png?raw=true"
+@application.callback(
     Output('f2-image', 'src'),
     [Input('f2-fighter', 'value')]
 )
@@ -586,10 +428,8 @@ def set_image_f2(fighter2):
         
     #return get_fighter_url(fighter2)
     
-    return "https://github.com/jasonchanhku/UFC-MMA-Predictor/blob/master/Pictures/fighter_right.png?raw=true"
-
-
-@app.callback(
+    return "https://github.com/ssadagop97/UFC_DASH/tree/main/UFC_DASH/Pictures/fighter_right.png?raw=true"
+@application.callback(
     Output('fight-stats', 'figure'),
     [Input('f1-fighter', 'value'),
      Input('f2-fighter', 'value')]
@@ -597,7 +437,6 @@ def set_image_f2(fighter2):
 def update_graph(f1, f2):
     f1_x = fighters_db_normalize[fighters_db_normalize['NAME'] == f1].iloc[0, :].values.tolist()[1:]
     f2_x = fighters_db_normalize[fighters_db_normalize['NAME'] == f2].iloc[0, :].values.tolist()[1:]
-
     trace1 = go.Bar(
         y=col_y,
         x=[x * -1 for x in f1_x],
@@ -624,9 +463,7 @@ def update_graph(f1, f2):
                 width=3)
         )
     )
-
     return {
-
         'data': [trace1, trace2],
         'layout': go.Layout(
             barmode='overlay',
@@ -642,11 +479,8 @@ def update_graph(f1, f2):
                 showticklabels=False
             )
         )
-
     }
-
-
-@app.callback(
+@application.callback(
     Output('f1-proba', 'children'),
     [Input('button', 'n_clicks')],
      state=[State('f1-fighter', 'value'),
@@ -655,7 +489,6 @@ def update_graph(f1, f2):
      State('f2-odds', 'value')]
 )
 def update_f1_proba(nclicks, f1, f2, f1_odds, f2_odds):
-
     if nclicks > 0:
         cols = ['SLPM', 'SAPM', 'STRD', 'TD']
         y = fighters_db[fighters_db['NAME'] == f1][cols].append(
@@ -682,11 +515,8 @@ def update_f1_proba(nclicks, f1, f2, f1_odds, f2_odds):
             delta_y = str(round(predict_outcome(delta_y)[0][0] * 100, 1)) + '%'
         else:
             return "fav odds must be less than und"
-
     return delta_y
-
-
-@app.callback(
+@application.callback(
     Output('f2-proba', 'children'),
     [Input('button', 'n_clicks')],
      state=[State('f1-fighter', 'value'),
@@ -695,7 +525,6 @@ def update_f1_proba(nclicks, f1, f2, f1_odds, f2_odds):
      State('f2-odds', 'value')]
 )
 def update_f2_proba(nclicks, f1, f2, f1_odds, f2_odds):
-
     if nclicks > 0:
         cols = ['SLPM', 'SAPM', 'STRD', 'TD']
         y = fighters_db[fighters_db['NAME'] == f1][cols].append(
@@ -724,24 +553,15 @@ def update_f2_proba(nclicks, f1, f2, f1_odds, f2_odds):
             delta_y = str(round(predict_outcome(delta_y)[0][1] * 100, 1)) + '%'
         else:
             delta_y = "fav odds must be less than und"
-
     return delta_y
-
-
-app.css.append_css({"external_url": "https://ufcmmapredictor.s3-ap-southeast-1.amazonaws.com/ufcmmapredictor.css"})
-
-app.title = 'UFC MMA Predictor'
-
-#application.css.append_css({"external_url": "https://ufcmmapredictor.s3-ap-southeast-1.amazonaws.com/ufcmmapredictor.css"})
-
-
-
-#if 'DYNO' in os.environ:
-#   application.scripts.config.serve_locally = False
-    
-
+application.css.append_css({"external_url": "https://ufcmmapredictor.s3-ap-southeast-1.amazonaws.com/ufcmmapredictor.css"})
+application.title = 'UFC MMA Predictor'
+if 'DYNO' in os.environ:
+    application.scripts.config.serve_locally = False
+    application.scripts.append_script({
+        'external_url': 'https://cdn.rawgit.com/jasonchanhku/UFC-MMA-Predictor/f6830a25/gtag.js'
+    })
 # add host = "0.0.0.0" and port = "8080" in dev mode
 if __name__ == "__main__":
     application.secret_key = 'mysecret'
     application.run_server(debug=True,host='0.0.0.0')
- 
