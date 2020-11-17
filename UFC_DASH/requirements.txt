@@ -16,7 +16,6 @@ itsdangerous==1.1.0
 Jinja2==2.11.2
 jmespath==0.10.0
 joblib==0.17.0
-jsonschema==3.2.0
 jupyter-core==4.6.3
 MarkupSafe==1.1.1
 nbformat==5.0.8
