@@ -567,10 +567,6 @@ def set_f2_fighter_value(options):
     [Input('f1-fighter', 'value')]
 )
 def set_image_f1(fighter1):
-    if fighter1 == 'Aleksei Oleinik':
-        fighter1 = 'Aleksei Oliynyk'
-        
-    #return get_fighter_url(fighter1)
     return "https://github.com/ssadagop97/UFC_DASH/tree/main/UFC_DASH/Pictures/fighter_left.png?raw=true"
 
 
@@ -579,11 +575,6 @@ def set_image_f1(fighter1):
     [Input('f2-fighter', 'value')]
 )
 def set_image_f2(fighter2):
-    if fighter2 == 'Aleksei Oleinik':
-        fighter2 = 'Aleksei Oliynyk'
-        
-    #return get_fighter_url(fighter2)
-    
     return "https://github.com/ssadagop97/UFC_DASH/tree/main/UFC_DASH/Pictures/fighter_right.png?raw=true"
 
 
@@ -726,7 +717,7 @@ def update_f2_proba(nclicks, f1, f2, f1_odds, f2_odds):
     return delta_y
 
 
-application.css.append_css({"external_url": "https://ufcmmapredictor.s3-ap-southeast-1.amazonaws.com/ufcmmapredictor.css"})
+#application.css.append_css({"external_url": "https://ufcmmapredictor.s3-ap-southeast-1.amazonaws.com/ufcmmapredictor.css"})
 
 application.title = 'UFC MMA Predictor'
 
