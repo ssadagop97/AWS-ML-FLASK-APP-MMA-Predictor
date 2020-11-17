@@ -121,7 +121,7 @@ def get_fighter_url(fighter):
     url = results.links[0]
     return url
 colors = {
-    'background': 'black',
+    'background': 'grey',
     'text': '#000000'
 }
 size = {
