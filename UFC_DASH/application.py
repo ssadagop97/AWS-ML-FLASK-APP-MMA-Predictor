@@ -732,9 +732,7 @@ application.title = 'UFC MMA Predictor'
 
 if 'DYNO' in os.environ:
     application.scripts.config.serve_locally = False
-    application.scripts.append_script({
-        'external_url': 'https://cdn.rawgit.com/jasonchanhku/UFC-MMA-Predictor/f6830a25/gtag.js'
-    })
+    
 
 # add host = "0.0.0.0" and port = "8080" in dev mode
 if __name__ == "__main__":
