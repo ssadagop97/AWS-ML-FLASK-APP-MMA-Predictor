@@ -129,6 +129,8 @@ col_y = fighters_db_normalize.columns.tolist()[1:]
 
 # Section 3: Dash web app (removed keys)
 
+# Section 3: Dash web app (removed keys)
+
 def get_fighter_url(fighter):
     buildargs = {
         'serviceName': 'customsearch',
@@ -148,30 +150,26 @@ def get_fighter_url(fighter):
     }
 
     # Create a results object
-    results = search_google.api.results(buildargs, cseargs)
-    url = results.links[0]
 
-    return url
 
 
 colors = {
 
-    'background': 'clack',
-    'text': '#000000'
+    'background': '#F4F6F7',
+    'text': '#34495E'
 
 }
 
 size = {
-    'font': '30px'
+    'font': '20px'
 }
 
-application = dash.Dash(__name__)
+application = app = dash.Dash(__name__)
 
-server = application.server
+server = app.server
 
-application.layout = html.Div(style={'backgroundColor': colors['background'],
-                            'fontColor':'white',
-                             'backgroundImage': 'url(https://github.com/ssadagop97/UFC_DASH/blob/main/conor-mcgregor-winner.jpg?raw=true)',
+app.layout = html.Div(style={'backgroundColor': colors['background'],
+                             'backgroundImage': 'url(https://github.com/jasonchanhku/UFC-MMA-Predictor/blob/master/Pictures/NOTORIOUS.jpg?raw=true)',
                              'backgroundRepeat': 'no-repeat',
                              'backgroundPosition': 'center top',
                              'backgroundSize': 'auto',
@@ -219,7 +217,7 @@ application.layout = html.Div(style={'backgroundColor': colors['background'],
 
             dcc.Dropdown(
                 id='f1-weightclass',
-                options=[{'label': i.capitalize(), 'value': i} for i in weightclass],
+                options=[],
                 value='welterweight'
             ),
 
@@ -236,7 +234,9 @@ application.layout = html.Div(style={'backgroundColor': colors['background'],
                        ),
 
             dcc.Dropdown(
-                id='f1-fighter'
+                id='f1-fighter',
+                options=[{'label': i.capitalize(), 'value': i} for i in f1name],
+                value='welterweight'
             ),
 
             html.Br(),
@@ -293,7 +293,7 @@ application.layout = html.Div(style={'backgroundColor': colors['background'],
 
             dcc.Dropdown(
                 id='f2-weightclass',
-                options=[{'label': i.capitalize(), 'value': i} for i in weightclass],
+                options=[],
                 value='welterweight'
             ),
 
@@ -309,7 +309,9 @@ application.layout = html.Div(style={'backgroundColor': colors['background'],
                        ),
 
             dcc.Dropdown(
-                id='f2-fighter'
+                id='f2-fighter',
+                options=[{'label': i.capitalize(), 'value': i} for i in f2name],
+                value='welterweight'
             ),
 
             html.Br(),
@@ -466,13 +468,46 @@ application.layout = html.Div(style={'backgroundColor': colors['background'],
         [
             dcc.Markdown(
                 '''
-                WIN WIN BETS
-
-		
-WHERE BETTORS BECOME BILLIONIARIES
+                #### User Guide
+                
+                ##### Data and prediction model
+                
+                This web app relies on multiple scrapers that runs **daily**. Hence, data is updated everyday and latest fighter                   and fight data is available immediately.
+                
+                The prediction model is always trained up to most recent fight card hence capturing any trend changes in the data.
+                
+                ##### Know your fighters' weightclass
+                
+                Using this web app requires knowledge of the UFC fighters that belong to a specific weightclass. You may
+                find the full fighters roster [here](https://www.ufc.com/athletes)                    
+                   
+                ##### Know who's fighting who
+                
+                Upcoming scheduled fights can be found [here](http://www.sherdog.com/organizations/Ultimate-Fighting-Championship-UFC-2)
+                as well as fighters on fight cards
+                
+                ##### Know who's the favourite and underdog (Decimal Odds)
+                
+                Bear in mind that the model this web app uses is trained on **Decimal Odds** instead of American Odds.
+                For more information on the differences, see [here](http://www.betmma.tips/mma_betting_help.php). To know
+                which fighter is the favourite or underdog, check [here](http://www.betmma.tips/mma_betting_favorites_vs_underdogs.php).
+                Note that the favourite fighter's odds are **always less than the underdog**. You will see Error if you
+                input otherwise.
+                
+                To find out the odds on the next UFC event, click [here](https://www.betmma.tips/next_ufc_event.php)
+                
+                ##### Select weightclass, fighter, and input odds accordingly
+                
+                Hope for the best and win some money !
+                
+                ##### Glossary
+                
+                To learn the MMA and UFC lingo, click [here](https://www.ufc.com/fighting-glossary)
+                
+                '''.replace('  ', '')
             )
         ],
-        style={'text-align': 'centre', 'margin-bottom': '45px'}
+        style={'text-align': 'left', 'margin-bottom': '15px'}
     ),
 
     html.Br(),
@@ -490,7 +525,7 @@ WHERE BETTORS BECOME BILLIONIARIES
 # Fighter 1
 
 
-@application.callback(
+@app.callback(
     Output('f1-fighter', 'options'),
     [Input('f1-weightclass', 'value')]
 )
@@ -499,7 +534,7 @@ def set_f1_fighter(weightclasses):
             fighters_db[fighters_db['WeightClass'] == weightclasses]['NAME'].sort_values()]
 
 
-@application.callback(
+@app.callback(
     Output('f1-fighter', 'value'),
     [Input('f1-fighter', 'options')]
 )
@@ -510,7 +545,7 @@ def set_f1_fighter_value(options):
 # Fighter 2
 
 
-@application.callback(
+@app.callback(
     Output('f2-fighter', 'options'),
     [Input('f2-weightclass', 'value')]
 )
@@ -519,7 +554,7 @@ def set_f1_fighter(weightclasses):
             fighters_db[fighters_db['WeightClass'] == weightclasses]['NAME'].sort_values()]
 
 
-@application.callback(
+@app.callback(
     Output('f2-fighter', 'value'),
     [Input('f2-fighter', 'options')]
 )
@@ -529,23 +564,32 @@ def set_f2_fighter_value(options):
 
 # Callback for change of picture
 
-@application.callback(
-    Output("fighter1", 'src'),
+@app.callback(
+    Output('f1-image', 'src'),
     [Input('f1-fighter', 'value')]
 )
 def set_image_f1(fighter1):
-    return "https://github.com/ssadagop97/UFC_DASH/tree/main/UFC_DASH/Pictures/fighter_left.png?raw=true"
+    if fighter1 == 'Aleksei Oleinik':
+        fighter1 = 'Aleksei Oliynyk'
+        
+    #return get_fighter_url(fighter1)
+    return "https://github.com/jasonchanhku/UFC-MMA-Predictor/blob/master/Pictures/fighter_left.png?raw=true"
 
 
-@application.callback(
-    Output("fighter2:", 'src'),
+@app.callback(
+    Output('f2-image', 'src'),
     [Input('f2-fighter', 'value')]
 )
 def set_image_f2(fighter2):
-    return "https://github.com/ssadagop97/UFC_DASH/tree/main/UFC_DASH/Pictures/fighter_right.png?raw=true"
+    if fighter2 == 'Aleksei Oleinik':
+        fighter2 = 'Aleksei Oliynyk'
+        
+    #return get_fighter_url(fighter2)
+    
+    return "https://github.com/jasonchanhku/UFC-MMA-Predictor/blob/master/Pictures/fighter_right.png?raw=true"
 
 
-@application.callback(
+@app.callback(
     Output('fight-stats', 'figure'),
     [Input('f1-fighter', 'value'),
      Input('f2-fighter', 'value')]
@@ -602,7 +646,7 @@ def update_graph(f1, f2):
     }
 
 
-@application.callback(
+@app.callback(
     Output('f1-proba', 'children'),
     [Input('button', 'n_clicks')],
      state=[State('f1-fighter', 'value'),
@@ -642,7 +686,7 @@ def update_f1_proba(nclicks, f1, f2, f1_odds, f2_odds):
     return delta_y
 
 
-@application.callback(
+@app.callback(
     Output('f2-proba', 'children'),
     [Input('button', 'n_clicks')],
      state=[State('f1-fighter', 'value'),
@@ -650,8 +694,8 @@ def update_f1_proba(nclicks, f1, f2, f1_odds, f2_odds):
      State('f1-odds', 'value'),
      State('f2-odds', 'value')]
 )
-
 def update_f2_proba(nclicks, f1, f2, f1_odds, f2_odds):
+
     if nclicks > 0:
         cols = ['SLPM', 'SAPM', 'STRD', 'TD']
         y = fighters_db[fighters_db['NAME'] == f1][cols].append(
@@ -684,9 +728,13 @@ def update_f2_proba(nclicks, f1, f2, f1_odds, f2_odds):
     return delta_y
 
 
+app.css.append_css({"external_url": "https://ufcmmapredictor.s3-ap-southeast-1.amazonaws.com/ufcmmapredictor.css"})
+
+app.title = 'UFC MMA Predictor'
+
 #application.css.append_css({"external_url": "https://ufcmmapredictor.s3-ap-southeast-1.amazonaws.com/ufcmmapredictor.css"})
 
-application.title = 'UFC MMA Predictor'
+
 
 #if 'DYNO' in os.environ:
 #   application.scripts.config.serve_locally = False
