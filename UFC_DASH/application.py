@@ -130,7 +130,6 @@ size = {
 application = dash.Dash(__name__)
 server = application.server
 application.layout = html.Div(style={'backgroundColor': colors['background'],
-                            'fontColor':'white',
                              'backgroundImage': 'url(https://github.com/ssadagop97/UFC_DASH/blob/main/conor-mcgregor-winner.jpg?raw=true)',
                              'backgroundRepeat': 'no-repeat',
                              'backgroundPosition': 'center top',
@@ -140,13 +139,13 @@ application.layout = html.Div(style={'backgroundColor': colors['background'],
     html.H1(
         "UFC MMA Predictor",
         style={
-            'textAlign': 'center'
+            'textAlign': 'center','color':'white'
         }
     ),
     html.H3(
         'Current Model Accuracy: 70.4%',
         style={
-            'textAlign': 'center',
+            'textAlign': 'center','color':'white'
         }
     ),
     html.Div(style={'textAlign': 'center'}, children=[
@@ -155,7 +154,7 @@ application.layout = html.Div(style={'backgroundColor': colors['background'],
                 'Favourite Fighter',
                 style={
                     'textAlign': 'center',
-                    'fontSize': '40px'
+                    'fontSize': '40px', 'color':'white'
                 }
             ),
             html.Label('Select Weightclass',
@@ -205,12 +204,12 @@ application.layout = html.Div(style={'backgroundColor': colors['background'],
                 'Underdog Fighter',
                 style={
                     'textAlign': 'center',
-                    'fontSize': '40px'
+                    'fontSize': '40px', 'color':'white'
                 }
             ),
             html.Label('Select Weightclass',
                        style={
-                           'fontSize': size['font']
+                           'fontSize': size['font'],'color':'white'
                        }
                        ),
             dcc.Dropdown(
@@ -221,7 +220,7 @@ application.layout = html.Div(style={'backgroundColor': colors['background'],
             html.Br(),
             html.Label('Select Fighter',
                        style={
-                           'fontSize': size['font']
+                           'fontSize': size['font'],'color':'white'
                        }
                        ),
             dcc.Dropdown(
@@ -309,25 +308,6 @@ application.layout = html.Div(style={'backgroundColor': colors['background'],
     html.Br(),
     
     html.Br(),
-           
-    html.Br(),
-           
-    html.Div(
-        [
-            dcc.Markdown(
-                '''
-                #### An Interactive Web App by jasonchanhku
-                For more information and contact, please visit my [Website](https://jasonchanhku.github.io), 
-                [Github](https://github.com/jasonchanhku) and [Jupyter Notebook Documentation](https://github.com/jasonchanhku/UFC-MMA-Predictor/blob/master/UFC%20MMA%20Predictor%20Workflow.ipynb).
-                
-                **Disclaimer:** Please use this web app responsibly and by using it, I am not responsible for any losses made by decisions of this web app.
-                '''.replace('  ', '')
-            )
-        ],
-        style={'text-align': 'center', 'margin-bottom': '15px'}
-    ),
-    html.Br(),
-    html.Br()
 ])
 # Decorators
 # Update f1-fighter amd f2-fighter based on input from f1-weightclass and f2-weightclass
