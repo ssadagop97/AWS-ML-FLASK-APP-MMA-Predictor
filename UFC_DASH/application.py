@@ -22,8 +22,8 @@ import plotly.graph_objs as go
 # Libraries used for Section 2
 from dash.dependencies import Input, Output, State
 ########### Initiate the app
-external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
-application = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+#external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+application = dash.Dash(__name__)
 server = application.server
 
 # Section 1: Data loading and Machine Learning.
@@ -156,20 +156,20 @@ def get_fighter_url(fighter):
 
 colors = {
 
-    'background': 'black',
+    'background': 'white',
     'text': '#000000'
 
 }
 
 size = {
-    'font': '20px'
+    'font': '30px'
 }
 
 application = dash.Dash(__name__)
 
 server = application.server
 
-application.layout = html.Div(style={'backgroundColor': colors['background'],
+application.layout = html.Div(style={'backgroundColor': colors['black'],
                             'fontColor':'white',
                              'backgroundImage': 'url(https://github.com/ssadagop97/UFC_DASH/blob/main/conor-mcgregor-winner.jpg?raw=true)',
                              'backgroundRepeat': 'no-repeat',
@@ -563,7 +563,7 @@ def set_f2_fighter_value(options):
 # Callback for change of picture
 
 @application.callback(
-    Output('f1-image', 'src'),
+    Output("https://github.com/ssadagop97/UFC_DASH/tree/main/UFC_DASH/Pictures/fighter_left.png?raw=true", 'src'),
     [Input('f1-fighter', 'value')]
 )
 def set_image_f1(fighter1):
@@ -571,7 +571,7 @@ def set_image_f1(fighter1):
 
 
 @application.callback(
-    Output('f2-image', 'src'),
+    Output("https://github.com/ssadagop97/UFC_DASH/tree/main/UFC_DASH/Pictures/fighter_right.png?raw=true", 'src'),
     [Input('f2-fighter', 'value')]
 )
 def set_image_f2(fighter2):
@@ -721,8 +721,8 @@ def update_f2_proba(nclicks, f1, f2, f1_odds, f2_odds):
 
 application.title = 'UFC MMA Predictor'
 
-if 'DYNO' in os.environ:
-    application.scripts.config.serve_locally = False
+#if 'DYNO' in os.environ:
+#   application.scripts.config.serve_locally = False
     
 
 # add host = "0.0.0.0" and port = "8080" in dev mode
