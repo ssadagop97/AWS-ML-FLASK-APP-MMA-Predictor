@@ -1,5 +1,4 @@
 dash
-pickle
 smart_open
 dash-core-components
 dash-html-components
