@@ -70,12 +70,21 @@ best_cols = ['SLPM_delta', 'SAPM_delta', 'STRD_delta', 'TD_delta', 'Odds_delta']
 all_X = fights_db[best_cols]
 all_y = fights_db['Label']
 
+# This was the best model identified in the ipynb documentation
+mlp = MLPClassifier(activation='tanh', alpha=0.0001, batch_size='auto', beta_1=0.9,
+                    beta_2=0.999, early_stopping=False, epsilon=1e-08,
+                    hidden_layer_sizes=(5, 5), learning_rate='constant',
+                    learning_rate_init=0.001, max_iter=200, momentum=0.9,
+                    nesterovs_momentum=True, power_t=0.5, random_state=1, shuffle=True,
+                    solver='adam', tol=0.0001, validation_fraction=0.1, verbose=False,
+                    warm_start=False)
+
+mlp.fit(all_X, all_y)
+
 
 def predict_outcome(data):
-# Load from file
-    with open('Datasets/model.pkl', 'rb') as file:
-         pickle_model = pickle.load(file)
-    prediction = pickle_model.predict_proba(data.reshape(1, -1))
+    prediction = mlp.predict_proba(data.reshape(1, -1))
+
     return prediction
 
 
