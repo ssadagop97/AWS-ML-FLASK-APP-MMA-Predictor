@@ -156,7 +156,7 @@ def get_fighter_url(fighter):
 
 colors = {
 
-    'background': 'white',
+    'background': 'black',
     'text': '#000000'
 
 }
@@ -169,7 +169,7 @@ application = dash.Dash(__name__)
 
 server = application.server
 
-application.layout = html.Div(style={'backgroundColor': colors['black'],
+application.layout = html.Div(style={'backgroundColor': colors['background'],
                             'fontColor':'white',
                              'backgroundImage': 'url(https://github.com/ssadagop97/UFC_DASH/blob/main/conor-mcgregor-winner.jpg?raw=true)',
                              'backgroundRepeat': 'no-repeat',
