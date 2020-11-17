@@ -571,7 +571,7 @@ def set_image_f1(fighter1):
         fighter1 = 'Aleksei Oliynyk'
         
     #return get_fighter_url(fighter1)
-    return "https://github.com/jasonchanhku/UFC-MMA-Predictor/blob/master/Pictures/fighter_left.png?raw=true"
+    return "https://github.com/jasonchanhku/UFC-MMA-Predictor/blob/master/Pictures/fighter_left.jpg?raw=true"
 
 
 @application.callback(
@@ -584,7 +584,7 @@ def set_image_f2(fighter2):
         
     #return get_fighter_url(fighter2)
     
-    return "https://github.com/jasonchanhku/UFC-MMA-Predictor/blob/master/Pictures/fighter_right.png?raw=true"
+    return "https://github.com/jasonchanhku/UFC-MMA-Predictor/blob/master/Pictures/fighter_right.jpg?raw=true"
 
 
 @application.callback(
