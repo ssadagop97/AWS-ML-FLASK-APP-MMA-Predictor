@@ -9,7 +9,6 @@ The UFC MMA Predictor Web App V3.0
 author: Jason Chan Jin An
 GitHub: www.github.com/jasonchanhku
 """
-import dash
 import dash_core_components as dcc
 import dash_html_components as html
 # Libraries used for Section 1
