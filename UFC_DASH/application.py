@@ -156,7 +156,7 @@ def get_fighter_url(fighter):
 
 colors = {
 
-    'background': 'black',
+    'background': 'clack',
     'text': '#000000'
 
 }
@@ -466,46 +466,13 @@ application.layout = html.Div(style={'backgroundColor': colors['background'],
         [
             dcc.Markdown(
                 '''
-                #### User Guide
-                
-                ##### Data and prediction model
-                
-                This web app relies on multiple scrapers that runs **daily**. Hence, data is updated everyday and latest fighter                   and fight data is available immediately.
-                
-                The prediction model is always trained up to most recent fight card hence capturing any trend changes in the data.
-                
-                ##### Know your fighters' weightclass
-                
-                Using this web app requires knowledge of the UFC fighters that belong to a specific weightclass. You may
-                find the full fighters roster [here](https://www.ufc.com/athletes)                    
-                   
-                ##### Know who's fighting who
-                
-                Upcoming scheduled fights can be found [here](http://www.sherdog.com/organizations/Ultimate-Fighting-Championship-UFC-2)
-                as well as fighters on fight cards
-                
-                ##### Know who's the favourite and underdog (Decimal Odds)
-                
-                Bear in mind that the model this web app uses is trained on **Decimal Odds** instead of American Odds.
-                For more information on the differences, see [here](http://www.betmma.tips/mma_betting_help.php). To know
-                which fighter is the favourite or underdog, check [here](http://www.betmma.tips/mma_betting_favorites_vs_underdogs.php).
-                Note that the favourite fighter's odds are **always less than the underdog**. You will see Error if you
-                input otherwise.
-                
-                To find out the odds on the next UFC event, click [here](https://www.betmma.tips/next_ufc_event.php)
-                
-                ##### Select weightclass, fighter, and input odds accordingly
-                
-                Hope for the best and win some money !
-                
-                ##### Glossary
-                
-                To learn the MMA and UFC lingo, click [here](https://www.ufc.com/fighting-glossary)
-                
-                '''.replace('  ', '')
+                WIN WIN BETS
+
+		
+WHERE BETTORS BECOME BILLIONIARIES
             )
         ],
-        style={'text-align': 'left', 'margin-bottom': '15px'}
+        style={'text-align': 'centre', 'margin-bottom': '45px'}
     ),
 
     html.Br(),
@@ -563,7 +530,7 @@ def set_f2_fighter_value(options):
 # Callback for change of picture
 
 @application.callback(
-    Output("https://github.com/ssadagop97/UFC_DASH/tree/main/UFC_DASH/Pictures/fighter_left.png?raw=true", 'src'),
+    Output("fighter1", 'src'),
     [Input('f1-fighter', 'value')]
 )
 def set_image_f1(fighter1):
@@ -571,7 +538,7 @@ def set_image_f1(fighter1):
 
 
 @application.callback(
-    Output("https://github.com/ssadagop97/UFC_DASH/tree/main/UFC_DASH/Pictures/fighter_right.png?raw=true", 'src'),
+    Output("fighter2:", 'src'),
     [Input('f2-fighter', 'value')]
 )
 def set_image_f2(fighter2):
