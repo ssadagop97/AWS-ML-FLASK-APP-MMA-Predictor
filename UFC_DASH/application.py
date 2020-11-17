@@ -359,16 +359,7 @@ def set_image_f1(fighter1):
 def set_image_f2(fighter2):
     if fighter2 == 'Aleksei Oleinik':
         fighter2 = 'Aleksei Oliynyk'
-html.Div(
-        [
-            dcc.Markdown(
-                '''
-                #### User Guide
-                
-            )
-        ],
-        style={'text-align': 'left', 'margin-bottom': '15px'}
- )  
+ 
     #return get_fighter_url(fighter2)
     
     return "https://github.com/jasonchanhku/UFC-MMA-Predictor/blob/master/Pictures/fighter_right.png?raw=true"
