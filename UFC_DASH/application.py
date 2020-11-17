@@ -10,7 +10,7 @@ author: Jason Chan Jin An
 GitHub: www.github.com/jasonchanhku
 """
 import dash
-
+import pickle
 import dash_core_components as dcc
 import dash_html_components as html
 # Libraries used for Section 1
