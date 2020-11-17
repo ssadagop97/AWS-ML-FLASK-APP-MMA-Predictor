@@ -43,14 +43,7 @@ server = application.server
 
 # j = r.json()
 
-from boto.s3.key import Key
-bucket='winwincsvs'
-k = Key(bucket)
-k.key = 'data_1.csv'
-#k.set_canned_acl('public-read')
-
-#fighters_db = pd.read_csv('Datasets/UFC_Fighters_Database.csv')
-fighters_db = pd.read_csv('https://winwincsvs.s3.amazonaws.com/UFC_Fighters_Database.csv')
+fighters_db = pd.read_csv('Datasets/UFC_Fighters_Database.csv')
 
 # New fights db feed from morph.io
 # We're always asking for json because it's the easiest to deal with
@@ -63,9 +56,7 @@ fighters_db = pd.read_csv('https://winwincsvs.s3.amazonaws.com/UFC_Fighters_Data
 
 # j_1 = r_1.json()
 
-#fighters_db = pd.read_csv('Datasets/UFC_Fighters_Database.csv')
-#fights_db = pd.read_csv('Datasets/Cleansed_Data.csv')
-fighters_db = pd.read_csv('https://winwincsvs.s3.amazonaws.com/Cleansed_Data.csv')
+fights_db = pd.read_csv('Datasets/Cleansed_Data.csv')
 fights_db = fights_db.dropna()
 
 fighters = fighters_db['NAME']
