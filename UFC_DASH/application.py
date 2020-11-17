@@ -43,34 +43,12 @@ server = application.server
 
 # j = r.json()
 
-from smart_open import smart_open
-
-import os
-import boto3
-import pandas as pd
-import sys
-
-if sys.version_info[0] < 3: 
-    from StringIO import StringIO # Python 2.x
-else:
-    from io import StringIO # Python 3.x
-
-# get your credentials from environment variables
-aws_id = os.environ['AWS_ID']
-aws_secret = os.environ['AWS_SECRET']
-
-client = boto3.client('s3', aws_access_key_id=aws_id,
-        aws_secret_access_key=aws_secret)
-
-bucket_name = 'winwincsvs'
-
-object_key = 'UFC_Fighters_Database.csv'
-csv_obj = client.get_object(Bucket=bucket_name, Key=object_key)
-body = csv_obj['Body']
-csv_string = body.read().decode('utf-8')
-
-UFC_Fighters_Database = pd.read_csv(StringIO(csv_string))
+from boto.s3.key import Key
+k = Key(bucket)
+k.key = 'data_1.csv'
+k.set_canned_acl('public-read')
 #fighters_db = pd.read_csv('Datasets/UFC_Fighters_Database.csv')
+fighters_db = pd.read_csv('https://winwincsvs.s3.amazonaws.com/UFC_Fighters_Database.csv')
 
 # New fights db feed from morph.io
 # We're always asking for json because it's the easiest to deal with
@@ -82,16 +60,10 @@ UFC_Fighters_Database = pd.read_csv(StringIO(csv_string))
 # })
 
 # j_1 = r_1.json()
-bucket_name = 'winwincsvs'
 
-object_key = 'Cleansed_Data.csv'
-csv_obj = client.get_object(Bucket=bucket_name, Key=object_key)
-body = csv_obj['Body']
-csv_string = body.read().decode('utf-8')
-
-fights_db = pd.read_csv(StringIO(csv_string))
 #fighters_db = pd.read_csv('Datasets/UFC_Fighters_Database.csv')
 #fights_db = pd.read_csv('Datasets/Cleansed_Data.csv')
+fighters_db = pd.read_csv('https://winwincsvs.s3.amazonaws.com/Cleansed_Data.csv')
 fights_db = fights_db.dropna()
 
 fighters = fighters_db['NAME']
