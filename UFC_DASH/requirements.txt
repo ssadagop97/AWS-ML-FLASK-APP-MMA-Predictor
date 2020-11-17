@@ -1,7 +1,7 @@
-dash==0.36.0
-dash-core-components==0.43.0
-dash-html-components==0.13.5
-dash-renderer==0.17.0
+dash
+dash-core-components
+dash-html-components
+dash-renderer
 numpy==1.19.4
 pandas==1.1.4
 plotly==2.2.2
