@@ -352,7 +352,7 @@ def set_image_f1(fighter1):
     return "https://github.com/jasonchanhku/UFC-MMA-Predictor/blob/master/Pictures/fighter_left.png?raw=true"
 
 
-@app.callback(
+@application.callback(
     Output('f2-image', 'src'),
     [Input('f2-fighter', 'value')]
 )
