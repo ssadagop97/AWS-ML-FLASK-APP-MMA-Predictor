@@ -423,17 +423,17 @@ def update_graph(f1, f2):
      State('f1-odds', 'value'),
      State('f2-odds', 'value')]
 )
-
 def update_f1_proba(nclicks, f1, f2, f1_odds, f2_odds):
-    cols = ['SLPM', 'SAPM', 'STRD', 'TD']
-    y = fighters_db[fighters_db['NAME'] == f1][cols].append(
-        fighters_db[fighters_db['NAME'] == f2][cols], ignore_index=True)
-
-    try:
-        float(f1_odds)
-        float(f2_odds)
-    except:
-        return "input not a numeric decimal"
+    if True:
+        cols = ['SLPM', 'SAPM', 'STRD', 'TD']
+        y = fighters_db[fighters_db['NAME'] == f1][cols].append(
+            fighters_db[fighters_db['NAME'] == f2][cols], ignore_index=True)
+        
+        try:
+            float(f1_odds)
+            float(f2_odds)
+        except:
+            return "input not a numeric decimal"
         
         if '.' in f1_odds and '.' in f2_odds:
             f1_odds = float(f1_odds)
@@ -460,15 +460,17 @@ def update_f1_proba(nclicks, f1, f2, f1_odds, f2_odds):
      State('f2-odds', 'value')]
 )
 def update_f2_proba(nclicks, f1, f2, f1_odds, f2_odds):
-    cols = ['SLPM', 'SAPM', 'STRD', 'TD']
-    y = fighters_db[fighters_db['NAME'] == f1][cols].append(
-        fighters_db[fighters_db['NAME'] == f2][cols], ignore_index=True)
-
-    try:
-        float(f1_odds)
-        float(f2_odds)
-    except:
-        return "input not a numeric decimal"
+  
+    if True:
+        cols = ['SLPM', 'SAPM', 'STRD', 'TD']
+        y = fighters_db[fighters_db['NAME'] == f1][cols].append(
+            fighters_db[fighters_db['NAME'] == f2][cols], ignore_index=True)
+        
+        try:
+            float(f1_odds)
+            float(f2_odds)
+        except:
+            return "input not a numeric decimal"
         
         if '.' in f1_odds and '.' in f2_odds:
             f1_odds = float(f1_odds)
@@ -478,8 +480,6 @@ def update_f2_proba(nclicks, f1, f2, f1_odds, f2_odds):
         
         if f1_odds < 0 or f2_odds < 0:
             return "decimal odds must be positive"
-        
-        
         
         # Error handling
         if f1_odds < f2_odds:
