@@ -459,6 +459,7 @@ def update_f1_proba(nclicks, f1, f2, f1_odds, f2_odds):
      State('f2-odds', 'value')]
 )
 def update_f2_proba(nclicks, f1, f2, f1_odds, f2_odds):
+    nclicks=0
     if nclicks > 0:
         cols = ['SLPM', 'SAPM', 'STRD', 'TD']
         y = fighters_db[fighters_db['NAME'] == f1][cols].append(
@@ -488,8 +489,8 @@ def update_f2_proba(nclicks, f1, f2, f1_odds, f2_odds):
         else:
             delta_y = "fav odds must be less than und"
     return delta_y
-application.css.append_css({"external_url": "https://ufcmmapredictor.s3-ap-southeast-1.amazonaws.com/ufcmmapredictor.css"})
-application.title = 'UFC MMA Predictor'
+#application.css.append_css({"external_url": "https://ufcmmapredictor.s3-ap-southeast-1.amazonaws.com/ufcmmapredictor.css"})
+application.title = 'winwinbets'
 if 'DYNO' in os.environ:
     application.scripts.config.serve_locally = False
     application.scripts.append_script({
