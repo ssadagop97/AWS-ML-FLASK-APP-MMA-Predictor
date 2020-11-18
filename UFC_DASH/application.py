@@ -487,7 +487,7 @@ def update_f2_proba(nclicks, f1, f2, f1_odds, f2_odds):
             delta_y = str(round(predict_outcome(delta_y)[0][1] * 100, 1)) + '%'
         else:
             delta_y = "fav odds must be less than und"
-   return delta_y
+     return delta_y
      
   
 #application.css.append_css({"external_url": "https://ufcmmapredictor.s3-ap-southeast-1.amazonaws.com/ufcmmapredictor.css"})
