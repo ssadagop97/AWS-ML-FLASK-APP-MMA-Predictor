@@ -425,15 +425,15 @@ def update_graph(f1, f2):
 )
 
 def update_f1_proba(nclicks, f1, f2, f1_odds, f2_odds):
-        cols = ['SLPM', 'SAPM', 'STRD', 'TD']
-        y = fighters_db[fighters_db['NAME'] == f1][cols].append(
-            fighters_db[fighters_db['NAME'] == f2][cols], ignore_index=True)
-        
-        try:
-            float(f1_odds)
-            float(f2_odds)
-        except:
-            return "input not a numeric decimal"
+    cols = ['SLPM', 'SAPM', 'STRD', 'TD']
+    y = fighters_db[fighters_db['NAME'] == f1][cols].append(
+        fighters_db[fighters_db['NAME'] == f2][cols], ignore_index=True)
+
+    try:
+        float(f1_odds)
+        float(f2_odds)
+    except:
+        return "input not a numeric decimal"
         
         if '.' in f1_odds and '.' in f2_odds:
             f1_odds = float(f1_odds)
@@ -460,15 +460,15 @@ def update_f1_proba(nclicks, f1, f2, f1_odds, f2_odds):
      State('f2-odds', 'value')]
 )
 def update_f2_proba(nclicks, f1, f2, f1_odds, f2_odds):
-        cols = ['SLPM', 'SAPM', 'STRD', 'TD']
-        y = fighters_db[fighters_db['NAME'] == f1][cols].append(
-            fighters_db[fighters_db['NAME'] == f2][cols], ignore_index=True)
-        
-        try:
-            float(f1_odds)
-            float(f2_odds)
-        except:
-            return "input not a numeric decimal"
+    cols = ['SLPM', 'SAPM', 'STRD', 'TD']
+    y = fighters_db[fighters_db['NAME'] == f1][cols].append(
+        fighters_db[fighters_db['NAME'] == f2][cols], ignore_index=True)
+
+    try:
+        float(f1_odds)
+        float(f2_odds)
+    except:
+        return "input not a numeric decimal"
         
         if '.' in f1_odds and '.' in f2_odds:
             f1_odds = float(f1_odds)
@@ -487,7 +487,7 @@ def update_f2_proba(nclicks, f1, f2, f1_odds, f2_odds):
             delta_y = str(round(predict_outcome(delta_y)[0][1] * 100, 1)) + '%'
         else:
             delta_y = "fav odds must be less than und"
-    return delta_y
+     return delta_y
 #application.css.append_css({"external_url": "https://ufcmmapredictor.s3-ap-southeast-1.amazonaws.com/ufcmmapredictor.css"})
 application.title = 'winwinbets'
 if 'DYNO' in os.environ:
