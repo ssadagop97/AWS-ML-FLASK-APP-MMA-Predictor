@@ -426,7 +426,7 @@ def update_graph(f1, f2):
 
 def update_f1_proba(nclicks, f1, f2, f1_odds, f2_odds):
 
-    if nclicks -gt 0:
+    if nclicks:
         cols = ['SLPM', 'SAPM', 'STRD', 'TD']
         y = fighters_db[fighters_db['NAME'] == f1][cols].append(
             fighters_db[fighters_db['NAME'] == f2][cols], ignore_index=True)
@@ -462,7 +462,7 @@ def update_f1_proba(nclicks, f1, f2, f1_odds, f2_odds):
      State('f2-odds', 'value')]
 )
 def update_f2_proba(nclicks, f1, f2, f1_odds, f2_odds):
-    if nclicks -gt 0:
+    if nclicks:
         cols = ['SLPM', 'SAPM', 'STRD', 'TD']
         y = fighters_db[fighters_db['NAME'] == f1][cols].append(
             fighters_db[fighters_db['NAME'] == f2][cols], ignore_index=True)
