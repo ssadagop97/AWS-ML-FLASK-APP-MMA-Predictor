@@ -23,7 +23,7 @@ import plotly.graph_objs as go
 from dash.dependencies import Input, Output, State
 ########### Initiate the app
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
-application = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+application = dash.Dash(_name_, external_stylesheets=external_stylesheets)
 server = application.server
 # Section 1: Data loading and Machine Learning.
 # Make sure Machine Learning only run once
@@ -127,7 +127,7 @@ colors = {
 size = {
     'font': '20px'
 }
-application = dash.Dash(__name__)
+application = dash.Dash(_name_)
 server = application.server
 application.layout = html.Div(style={'backgroundColor': colors['background'],
                              'backgroundImage': 'url(https://github.com/ssadagop97/UFC_DASH/blob/main/conor-mcgregor-winner.jpg?raw=true)',
@@ -487,7 +487,7 @@ def update_f2_proba(nclicks, f1, f2, f1_odds, f2_odds):
             delta_y = str(round(predict_outcome(delta_y)[0][1] * 100, 1)) + '%'
         else:
             delta_y = "fav odds must be less than und"
-     return delta_y
+    return delta_y
      
   
 #application.css.append_css({"external_url": "https://ufcmmapredictor.s3-ap-southeast-1.amazonaws.com/ufcmmapredictor.css"})
@@ -498,6 +498,6 @@ if 'DYNO' in os.environ:
         'external_url': 'https://cdn.rawgit.com/jasonchanhku/UFC-MMA-Predictor/f6830a25/gtag.js'
     })
 # add host = "0.0.0.0" and port = "8080" in dev mode
-if __name__ == "__main__":
+if _name_ == "_main_":
     application.secret_key = 'mysecret'
     application.run_server(debug=True,host='0.0.0.0')
