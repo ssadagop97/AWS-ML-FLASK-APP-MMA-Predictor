@@ -40,7 +40,8 @@ server = application.server
 
 from boto.s3.key import Key
 
-
+nclicks=0
+delta_y=0
 fighters_db = pd.read_csv('Datasets/UFC_Fighters_Database.csv')
 #fighters_db = pd.read_csv('https://winwincsvs.s3.amazonaws.com/UFC_Fighters_Database.csv')
 
@@ -414,6 +415,7 @@ def update_graph(f1, f2):
             )
         )
     }
+
 @application.callback(
     Output('f1-proba', 'children'),
     [Input('button', 'n_clicks')],
@@ -422,8 +424,7 @@ def update_graph(f1, f2):
      State('f1-odds', 'value'),
      State('f2-odds', 'value')]
 )
-nclicks=0
-delta_y=0
+
 def update_f1_proba(nclicks, f1, f2, f1_odds, f2_odds):
 
     if nclicks > 0:
