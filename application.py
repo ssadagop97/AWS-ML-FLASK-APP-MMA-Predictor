@@ -86,7 +86,7 @@ app.layout = html.Div(style={'backgroundColor': colors['background'],
                              'backgroundImage': 'url(https://github.com/jasonchanhku/UFC-MMA-Predictor/blob/master/Pictures/NOTORIOUS.jpg?raw=true)',
                              'backgroundRepeat': 'no-repeat',
                              'backgroundPosition': 'center top',
-                             'backgroundSize': 'auto',
+                             'backgroundSize': 'cover',
                              'height': '950px'
                              }, children=[
 
@@ -117,7 +117,7 @@ app.layout = html.Div(style={'backgroundColor': colors['background'],
       html.H5(
         ' WHERE WINNERS BECOME BILLIONAIRES ',
         style={
-            'textAlign': 'right',
+            'textAlign': 'left',
         }
 
     ),
