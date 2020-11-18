@@ -158,6 +158,7 @@ application.layout = html.Div(style={'backgroundColor': colors['background'],
                 }
             ),
             html.Br(),
+            html.Br(),
             html.Label('Select Weightclass',
                        style={
                            'fontSize': size['font'],'color':'white'
@@ -169,15 +170,18 @@ application.layout = html.Div(style={'backgroundColor': colors['background'],
                 value='welterweight'
             ),
             html.Br(),
+            html.Br(),
             html.Label('Select Fighter',
                        style={
                            'fontSize': size['font'], 'color':'white'
                        }
                        ),
+            html.Br(),
             dcc.Dropdown(
                 id='f1-fighter'
             ),
             html.Br(),
+            
             html.Label(
                 'Input Decimal Odds',
                 style={
@@ -209,6 +213,7 @@ application.layout = html.Div(style={'backgroundColor': colors['background'],
                 }
             ),
             html.Br(),
+            html.Br(),
             html.Label('Select Weightclass',
                        style={
                            'fontSize': size['font'],'color':'white'
@@ -219,6 +224,7 @@ application.layout = html.Div(style={'backgroundColor': colors['background'],
                 options=[{'label': i.capitalize(), 'value': i} for i in weightclass],
                 value='welterweight'
             ),
+            html.Br(),
             html.Br(),
             html.Label('Select Fighter',
                        style={
