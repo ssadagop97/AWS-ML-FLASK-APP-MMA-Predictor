@@ -23,7 +23,7 @@ import plotly.graph_objs as go
 from dash.dependencies import Input, Output, State
 ########### Initiate the app
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
-application = dash.Dash(_name_, external_stylesheets=external_stylesheets)
+application = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 server = application.server
 # Section 1: Data loading and Machine Learning.
 # Make sure Machine Learning only run once
@@ -127,7 +127,7 @@ colors = {
 size = {
     'font': '20px'
 }
-application = dash.Dash(_name_)
+application = dash.Dash(__name__)
 server = application.server
 application.layout = html.Div(style={'backgroundColor': colors['background'],
                              'backgroundImage': 'url(https://github.com/ssadagop97/UFC_DASH/blob/main/conor-mcgregor-winner.jpg?raw=true)',
@@ -414,7 +414,6 @@ def update_graph(f1, f2):
             )
         )
     }
-
 @application.callback(
     Output('f1-proba', 'children'),
     [Input('button', 'n_clicks')],
@@ -424,7 +423,7 @@ def update_graph(f1, f2):
      State('f2-odds', 'value')]
 )
 def update_f1_proba(nclicks, f1, f2, f1_odds, f2_odds):
-    if True:
+    if nclicks > 0:
         cols = ['SLPM', 'SAPM', 'STRD', 'TD']
         y = fighters_db[fighters_db['NAME'] == f1][cols].append(
             fighters_db[fighters_db['NAME'] == f2][cols], ignore_index=True)
@@ -460,8 +459,7 @@ def update_f1_proba(nclicks, f1, f2, f1_odds, f2_odds):
      State('f2-odds', 'value')]
 )
 def update_f2_proba(nclicks, f1, f2, f1_odds, f2_odds):
-  
-    if True:
+    if nclicks > 0:
         cols = ['SLPM', 'SAPM', 'STRD', 'TD']
         y = fighters_db[fighters_db['NAME'] == f1][cols].append(
             fighters_db[fighters_db['NAME'] == f2][cols], ignore_index=True)
@@ -481,6 +479,8 @@ def update_f2_proba(nclicks, f1, f2, f1_odds, f2_odds):
         if f1_odds < 0 or f2_odds < 0:
             return "decimal odds must be positive"
         
+        
+        
         # Error handling
         if f1_odds < f2_odds:
             delta_y = np.append((y.loc[0] - y.loc[1]).values.reshape(1, -1), float(f1_odds) - float(f2_odds))
@@ -488,16 +488,14 @@ def update_f2_proba(nclicks, f1, f2, f1_odds, f2_odds):
         else:
             delta_y = "fav odds must be less than und"
     return delta_y
-     
-  
-#application.css.append_css({"external_url": "https://ufcmmapredictor.s3-ap-southeast-1.amazonaws.com/ufcmmapredictor.css"})
-application.title = 'winwinbets'
+application.css.append_css({"external_url": "https://ufcmmapredictor.s3-ap-southeast-1.amazonaws.com/ufcmmapredictor.css"})
+application.title = 'UFC MMA Predictor'
 if 'DYNO' in os.environ:
     application.scripts.config.serve_locally = False
     application.scripts.append_script({
         'external_url': 'https://cdn.rawgit.com/jasonchanhku/UFC-MMA-Predictor/f6830a25/gtag.js'
     })
 # add host = "0.0.0.0" and port = "8080" in dev mode
-if _name_ == "_main_":
+if __name__ == "__main__":
     application.secret_key = 'mysecret'
     application.run_server(debug=True,host='0.0.0.0')
