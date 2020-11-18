@@ -496,13 +496,13 @@ def update_f2_proba(nclicks, f1, f2, f1_odds, f2_odds):
         else:
             delta_y = "fav odds must be less than und"
     return delta_y
-application.css.append_css({"external_url": "https://ufcmmapredictor.s3-ap-southeast-1.amazonaws.com/ufcmmapredictor.css"})
+#application.css.append_css({"external_url": "https://ufcmmapredictor.s3-ap-southeast-1.amazonaws.com/ufcmmapredictor.css"})
 application.title = 'UFC MMA Predictor'
 if 'DYNO' in os.environ:
     application.scripts.config.serve_locally = False
-    application.scripts.append_script({
-        'external_url': 'https://cdn.rawgit.com/jasonchanhku/UFC-MMA-Predictor/f6830a25/gtag.js'
-    })
+#     application.scripts.append_script({
+#         'external_url': 'https://cdn.rawgit.com/jasonchanhku/UFC-MMA-Predictor/f6830a25/gtag.js'
+#     })
 # add host = "0.0.0.0" and port = "8080" in dev mode
 if __name__ == "__main__":
     application.secret_key = 'mysecret'
