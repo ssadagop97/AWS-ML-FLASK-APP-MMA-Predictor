@@ -1,18 +1,3 @@
-"""
-The UFC MMA Predictor Web App V3.0
-
-3.0 updates
-- automated the data update of fights and fighters
-- replaced outdated links in user guide
-
-3.1 TODO
-- think of how to separate machine learning from script
-- navigation bar of db browser and track record
-
-author: Jason Chan Jin An
-GitHub: www.github.com/jasonchanhku
-
-"""
 
 # Libraries used for Section 1
 import pandas as pd
@@ -117,6 +102,22 @@ app.layout = html.Div(style={'backgroundColor': colors['background'],
         'Current Model Accuracy: 70.4%',
         style={
             'textAlign': 'center',
+        }
+
+    ),
+  
+      html.H4(
+        ' A WIN-WIN BETS PRODUCT ',
+        style={
+            'textAlign': 'right',
+        }
+
+    ),
+  
+      html.H5(
+        ' WHERE WINNERS BECOME BILLIONAIRES ',
+        style={
+            'textAlign': 'right',
         }
 
     ),
@@ -441,7 +442,14 @@ app.layout = html.Div(style={'backgroundColor': colors['background'],
 
     html.Br(),
 
-    html.Br()
+    html.Br(),
+        html.H1(
+        ' wIN-WIN BETS : WHERE WINNERS BECOME BILLIONAIRES ',
+        style={
+            'textAlign': 'CENTER',
+        }
+
+    ),
 
 
 ])
