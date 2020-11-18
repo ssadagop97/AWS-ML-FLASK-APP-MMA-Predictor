@@ -157,6 +157,7 @@ application.layout = html.Div(style={'backgroundColor': colors['background'],
                     'fontSize': '40px', 'color':'white'
                 }
             ),
+            html.Br(),
             html.Label('Select Weightclass',
                        style={
                            'fontSize': size['font'],'color':'white'
@@ -207,6 +208,7 @@ application.layout = html.Div(style={'backgroundColor': colors['background'],
                     'fontSize': '40px', 'color':'white'
                 }
             ),
+            html.Br(),
             html.Label('Select Weightclass',
                        style={
                            'fontSize': size['font'],'color':'white'
