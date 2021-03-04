@@ -1,13 +1,20 @@
 # UFC MMA Predictor
 
-The UFC MMA Predictor https://ufcmmapredictor.herokuapp.com/ is a web app to predict fights exclusively in the Ultimate Fighting Championship (UFC). Please use at your own discretion as there is no guarentee of profit. **The machine learning model behind this web app currently gives a 70.4% accuracy**. This is also considered a professional project of mine. Please read the [Jupyter Notebook documentation](https://github.com/jasonchanhku/UFC-MMA-Predictor/blob/master/UFC%20MMA%20Predictor%20Workflow.ipynb) for more detailed information on the data preparation, modelling, and visualization.
+Project Description: ML Powered UFC Fights historical analytics website and Machine learning fight predictions for odds generation and tweaking
 
-Here you will find the following documents:
+AWS Infrastructure Used:
 
-* [Jupyter Notebook](https://github.com/jasonchanhku/UFC-MMA-Predictor/blob/master/UFC%20MMA%20Predictor%20Workflow.ipynb) of data science pipeline for the project
-* Python scripts to the web app
-* R web scraping scripts 
-* Demo of the app
+AWS Elastic Beanstalk (Flask App User Login Module)
+AWS EC2 instances (Dash App: Analytics websites module)
+Amazon SageMaker
+Amazon S3
+AWS CloudWatch
+Project Credits:
+
+Aditya Tornekar
+Sourabh Ghosh
+Shreyas Sadagopan
+Rishabh Agarwal
 
 # Getting Started
 
